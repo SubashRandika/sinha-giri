@@ -1,36 +1,27 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Sigiriya — Journey Through Time
 
-## Getting Started
-
-First, run the development server:
+A scroll-driven documentary: scroll position is the age of Sigiriya. The first half travels 2026 → 477 CE, the second returns to the present.
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev          # http://localhost:3000
+npm run build && npm start
+npm run images       # rebuild /public plates from /assets-src
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## How it works
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **One clock.** `src/lib/time/curve.ts` defines the year curve and what the year implies physically (`standing`, `overgrowth`, strata).
+- **One choreography table.** `src/lib/journey/choreography.ts` maps each chapter's local progress + year to the world state (plate, reveal mask, camera, fog, warmth, vegetation, drawing, silhouette).
+- **One scroll reader.** `src/lib/journey/controller.ts` runs on `gsap.ticker`: measures chapters with ScrollTrigger, smooths scroll, derives the year, writes `timeState`, and scrubs every chapter's paused GSAP timeline.
+- **One world pass.** `src/components/world/` is a single Three.js full-screen shader (dynamically imported) that blends each present-day photo with its reconstruction. `FallbackWorld` covers first paint and no-WebGL devices.
+- **Chapters** (`src/components/chapters/`) are sticky stages whose DOM timelines are normalised to duration 1.
+- **HUD**: the stratigraphic column (depth = age), the year readout, and the evidence chip (photograph / reconstruction / illustration).
+- **Sound** is synthesised with Web Audio and built only when the visitor turns it on.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Content and sources live in `src/content/`. Plate alignment calibration is in `src/lib/journey/plates.ts`.
 
-## Learn More
+## Before public release
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Confirm licences and credits for the present-day photographs in `assets-src/modern/` (several carry watermarks).
+- Set `NEXT_PUBLIC_SITE_URL` for correct Open Graph URLs.
