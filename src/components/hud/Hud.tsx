@@ -11,13 +11,14 @@ import { SoundToggle } from "./SoundToggle";
 
 const EVIDENCE_TEXT: Record<EvidenceKind, { title: string; note: string }> = {
   photograph: { title: "Photograph", note: "What survives today" },
+  animated: { title: "Animated photograph", note: "AI motion added to a photo" },
   reconstruction: { title: "Reconstruction", note: "Artistic interpretation" },
   illustration: { title: "Illustration", note: "Not a photograph" },
   none: { title: "", note: "" },
 };
 
 /** Chapters where the HUD year steps aside for a chapter's own typography. */
-const QUIET: ChapterId[] = ["hero", "king", "finale", "thennow"];
+const QUIET: ChapterId[] = ["hero", "king", "visit", "finale", "thennow"];
 
 export function Hud() {
   const { goTo } = useJourney();

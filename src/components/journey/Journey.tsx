@@ -21,6 +21,7 @@ import { MirrorWall } from "@/components/chapters/MirrorWall";
 import { FallOfTime } from "@/components/chapters/FallOfTime";
 import { Discovery } from "@/components/chapters/Discovery";
 import { Today } from "@/components/chapters/Today";
+import { Visit } from "@/components/chapters/Visit";
 import { ThenNow } from "@/components/chapters/ThenNow";
 import { Finale } from "@/components/chapters/Finale";
 
@@ -52,6 +53,12 @@ function hasWebGL() {
 }
 const noSubscribe = () => () => {};
 
+/** Visitors who asked to save data get the still plates instead of video. */
+function saveData() {
+  const c = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection;
+  return !!c?.saveData;
+}
+
 export function Journey({ notes }: { notes: ReactNode }) {
   const reduced = usePrefersReducedMotion();
   const sections = useRef(new Map<ChapterId, HTMLElement>());
@@ -59,6 +66,7 @@ export function Journey({ notes }: { notes: ReactNode }) {
   const controller = useRef<JourneyController | null>(null);
   const [worldReady, setWorldReady] = useState(false);
   const webgl = useSyncExternalStore<boolean | null>(noSubscribe, hasWebGL, () => null);
+  const lowData = useSyncExternalStore(noSubscribe, saveData, () => true);
   const [veil, setVeil] = useState(false);
 
   const registerSection = useCallback((id: ChapterId, el: HTMLElement | null) => {
@@ -105,7 +113,7 @@ export function Journey({ notes }: { notes: ReactNode }) {
     <JourneyContext.Provider value={api}>
       <div className="world" aria-hidden="true">
         <FallbackWorld hidden={worldReady && webgl === true} />
-        {webgl && <WorldCanvas reduced={reduced} onReady={() => setWorldReady(true)} />}
+        {webgl && <WorldCanvas reduced={reduced} films={!reduced && !lowData} onReady={() => setWorldReady(true)} />}
       </div>
       <div className={`travel-veil ${veil ? "is-on" : ""}`} aria-hidden="true" />
       <LoadingVeil ready={worldReady || webgl === false} />
@@ -124,6 +132,7 @@ export function Journey({ notes }: { notes: ReactNode }) {
         <FallOfTime />
         <Discovery />
         <Today />
+        <Visit />
         <ThenNow />
         <Finale />
         {notes}

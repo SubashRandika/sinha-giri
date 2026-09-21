@@ -38,12 +38,12 @@ export const PLATES: Record<PlateId, Plate> = {
     id: "summit",
     modern: { src: "/plates/summit-modern", aspect: 2400 / 1011, alt: "Aerial photograph of the summit: brick foundations and terraces on the flat top of the rock." },
     // Calibrated so the rock rim lines up with the tighter present-day photograph.
-    ancient: { src: "/plates/summit-ancient", aspect: 1280 / 724, zoom: 1.45, dx: 0.06, dy: 0.02, alt: "Cinematic interpretation: palace buildings with tiled roofs on the summit terraces at sunset." },
+    ancient: { src: "/plates/summit-ancient", aspect: 1280 / 724, zoom: 1.1, dx: 0.025, dy: 0, alt: "Cinematic interpretation: plastered terraces, pillared halls with tiled roofs and a rock-cut pool on the summit at sunset." },
   },
 };
 
 /** Texture-space fit (scale.xy, offset.xy) that covers the 16:9 frame. */
-export function fitOf(img: PlateImage): [number, number, number, number] {
+export function fitOf(img: Pick<PlateImage, "aspect" | "zoom" | "dx" | "dy">): [number, number, number, number] {
   const z = img.zoom ?? 1;
   const sx = img.aspect > FRAME_ASPECT ? FRAME_ASPECT / img.aspect : 1;
   const sy = img.aspect > FRAME_ASPECT ? 1 : img.aspect / FRAME_ASPECT;

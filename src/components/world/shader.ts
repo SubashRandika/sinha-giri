@@ -85,7 +85,8 @@ float accrete(float n, float reveal) {
 float revealMask(vec2 f, float reveal, float mode, out float edge) {
   float n = grainField(f);
   float m;
-  if (uSimple > 0.5) { edge = 0.0; return reveal; }
+  // Reduced motion, and cuts between two pieces of footage: a plain dissolve.
+  if (uSimple > 0.5 || mode > 2.5) { edge = 0.0; return reveal; }
   if (mode < 0.5) {
     // Accretion: material gathers in grains, like plaster setting.
     m = accrete(n, reveal);

@@ -5,6 +5,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { CHAPTERS, type ChapterId } from "@/content/chapters";
 import { easeYear, lerp, smoothstep } from "@/lib/time/curve";
 import { CHOREOGRAPHY, type Look } from "./choreography";
+import { FILMS, readyFilms } from "./films";
 import { emitFrame, timeState, type LayerState } from "./store";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -17,7 +18,7 @@ interface Entry {
   lastProgress: number;
 }
 
-export type EvidenceKind = "photograph" | "reconstruction" | "illustration" | "none";
+export type EvidenceKind = "photograph" | "animated" | "reconstruction" | "illustration" | "none";
 
 /** Which chapters show non-photographic imagery that is not a plate blend. */
 const EVIDENCE_OVERRIDE: Partial<Record<ChapterId, EvidenceKind>> = {
@@ -39,6 +40,23 @@ function copyLayer(dst: LayerState, src: LayerState) {
   dst.camera.zoom = src.camera.zoom;
   dst.camera.x = src.camera.x;
   dst.camera.y = src.camera.y;
+  dst.film0 = src.film0;
+  dst.time0 = src.time0;
+  dst.film1 = src.film1;
+  dst.time1 = src.time1;
+  dst.filmMix = src.filmMix;
+}
+
+/** What the visitor is looking at in a layer, given which clips can play. */
+function evidenceOf(l: LayerState): { kind: EvidenceKind; share: number } {
+  const slot = l.film1 && l.filmMix > 0.5 ? 1 : 0;
+  const id = slot ? l.film1 : l.film0;
+  if (id && readyFilms.has(id)) {
+    // A time-lapse starts on the photograph and ends on the reconstruction.
+    const share = FILMS[id].kind === "timelapse" ? (slot ? l.time1 : l.time0) : 0;
+    return { kind: share > 0.5 ? "reconstruction" : "animated", share };
+  }
+  return { kind: l.reveal > 0.5 ? "reconstruction" : "photograph", share: l.reveal };
 }
 
 /**
@@ -165,8 +183,9 @@ export class JourneyController {
       evidence.kind = override;
       evidence.share = override === "illustration" ? 1 : 0;
     } else {
-      evidence.share = shownLayer.reveal;
-      evidence.kind = shownLayer.reveal > 0.5 ? "reconstruction" : "photograph";
+      const e = evidenceOf(shownLayer);
+      evidence.kind = e.kind;
+      evidence.share = e.share;
     }
     s.evidence = evidence.share;
 

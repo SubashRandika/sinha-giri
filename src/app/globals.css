@@ -566,6 +566,9 @@ body {
 .hud-evidence__dot--photograph {
   background: currentColor;
 }
+.hud-evidence__dot--animated {
+  background: radial-gradient(circle, currentColor 38%, transparent 42%);
+}
 .hud-evidence__dot--reconstruction {
   border-color: var(--ochre);
   background: linear-gradient(90deg, var(--ochre) 50%, transparent 50%);
@@ -1486,6 +1489,55 @@ body {
   text-align: center;
   padding-inline: var(--gutter);
   text-shadow: 0 2px 40px rgb(0 0 0 / 0.5);
+}
+
+/* ─────────────────────────── Visit ─────────────────────────── */
+.visit__shot {
+  position: absolute;
+  left: var(--gutter);
+  bottom: calc(96px + 3.2rem);
+  max-width: min(17ch, calc(100vw - 2 * var(--gutter)));
+  text-shadow: 0 2px 40px rgb(0 0 0 / 0.55);
+}
+/* The walk as a route: a line that fills with the scroll, and the three
+   places it passes, lit as the visitor reaches them. */
+.route {
+  position: absolute;
+  left: var(--gutter);
+  right: calc(var(--gutter) + var(--rail));
+  /* Clears the evidence chip in the bottom corner. */
+  bottom: 96px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+}
+.route__fill {
+  position: absolute;
+  top: -1px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--accent);
+  transform-origin: left;
+  transform: scaleX(0);
+}
+.route__stops {
+  display: flex;
+  justify-content: space-between;
+  list-style: none;
+}
+.route__stop {
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--text) calc(40% + var(--on) * 60%), transparent);
+  text-shadow: 0 1px 12px rgb(0 0 0 / 0.5);
+}
+@media (max-width: 640px) {
+  .route__stop {
+    font-size: 0.58rem;
+    letter-spacing: 0.14em;
+  }
 }
 
 /* ─────────────────────────── Then / Now ─────────────────────────── */

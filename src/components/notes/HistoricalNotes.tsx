@@ -7,6 +7,11 @@ const KEY = [
     body: "The rock from the air, the water gardens, the Lion Gate paws, the summit foundations and the frescoes are present-day photographs of surviving remains.",
   },
   {
+    kind: "animated",
+    title: "Animated photographs",
+    body: "The drone flights and the walks through the gardens and the Lion Gate are video clips generated with AI (Higgsfield, Kling) from those photographs. The first frame is the photograph; the camera movement, clouds and mist are added. The time-lapses are clips that end on a reconstruction.",
+  },
+  {
     kind: "reconstruction",
     title: "Cinematic reconstruction",
     body: "The rebuilt city, the filled gardens, the complete lion and the summit palace are AI-generated visualizations, made for this site from the present-day photographs and guided by published descriptions. They show what the site may have looked like, not what it did look like. The form of the palace buildings and of the lion’s body and head is unknown.",
@@ -72,7 +77,7 @@ export function HistoricalNotes() {
 
             <h3 className="notes__h">Image credits</h3>
             <p className="notes__credits">
-              Present-day photographs were supplied for this project; photographer credits and licences are to be confirmed before public release. Reconstructions generated with Higgsfield from those photographs.
+              Present-day photographs were supplied for this project; photographer credits and licences are to be confirmed before public release. Reconstructions and video clips generated with Higgsfield from those photographs.
             </p>
           </div>
         </div>

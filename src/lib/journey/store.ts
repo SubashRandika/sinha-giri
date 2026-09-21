@@ -1,8 +1,9 @@
 import type { ChapterId } from "@/content/chapters";
+import type { FilmId } from "./films";
 
 export type PlateId = "aerial" | "gardens" | "lion" | "summit";
 export type SceneMode = "photo" | "rock" | "void";
-export type MaskMode = "accrete" | "rise" | "water";
+export type MaskMode = "accrete" | "rise" | "water" | "dissolve";
 
 export interface Camera {
   zoom: number;
@@ -19,6 +20,17 @@ export interface LayerState {
   /** 0 = photograph of today, 1 = full reconstruction. */
   reveal: number;
   camera: Camera;
+  /**
+   * Footage over the plate. Slot 0 shows at filmMix 0, slot 1 at filmMix 1,
+   * dissolving through the reveal mask. time is the scrub position (0..1),
+   * or -1 to let the clip play by itself. Until a clip can be shown, the
+   * plate and reveal above stand in for it.
+   */
+  film0: FilmId | null;
+  time0: number;
+  film1: FilmId | null;
+  time1: number;
+  filmMix: number;
 }
 
 /**
@@ -57,6 +69,11 @@ const defaultLayer: LayerState = {
   mask: "accrete",
   reveal: 0,
   camera: { zoom: 1.15, x: 0.6, y: 0.55 },
+  film0: null,
+  time0: 0,
+  film1: null,
+  time1: 0,
+  filmMix: 0,
 };
 
 export const timeState: TimeState = {

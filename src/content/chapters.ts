@@ -14,6 +14,7 @@ export type ChapterId =
   | "time"
   | "discovery"
   | "today"
+  | "visit"
   | "thennow"
   | "finale";
 
@@ -215,6 +216,21 @@ export const CHAPTERS: HistoricalChapter[] = [
     length: 3.2,
     visualMode: "modern",
     sources: ["unesco"],
+  },
+  {
+    id: "visit",
+    index: null,
+    navLabel: "Visit",
+    title: "Walk It Today",
+    years: [2026, 2026],
+    yearEase: "linear",
+    length: 4.6,
+    visualMode: "modern",
+    discover: {
+      label: "Plan a visit",
+      body: "The usual route runs east through the water gardens and boulder gardens, up stairways and the gallery past the frescoes and Mirror Wall, to the Lion Gate terrace and the final climb to the summit.",
+    },
+    sources: ["sltda", "ccf"],
   },
   {
     id: "thennow",
