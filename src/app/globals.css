@@ -1541,20 +1541,30 @@ body {
 }
 
 /* ─────────────────────────── Then / Now ─────────────────────────── */
+/* Title, image, place buttons and hint each get a row; the image row takes
+   whatever height is left, so the image never runs into the buttons. */
 .tn {
   display: grid;
-  align-content: center;
+  grid-template-rows: auto minmax(0, 1fr) auto auto;
   justify-items: center;
-  gap: 22px;
-  padding: 70px var(--gutter) 90px;
+  gap: clamp(12px, 2.4svh, 22px);
+  padding: clamp(60px, 9svh, 76px) var(--gutter) clamp(20px, 5svh, 56px);
   background: #0d0a08;
 }
 .tn__title {
   font-size: clamp(1.4rem, 3vw, 2.6rem);
 }
+.tn__fit {
+  width: min(100%, calc(100vw - 2 * var(--gutter) - var(--rail)));
+  height: 100%;
+  min-height: 0;
+  container-type: size;
+  display: grid;
+  place-items: center;
+}
 .tn__frame {
   position: relative;
-  width: min(calc(100vw - 2 * var(--gutter) - var(--rail)), 1320px, calc(64svh * 16 / 9));
+  width: min(100cqw, 100cqh * 16 / 9, 1320px);
   aspect-ratio: 16 / 9;
   overflow: hidden;
   background: var(--soot);
@@ -1912,7 +1922,7 @@ body {
     font-size: 0.58rem;
   }
   .tn__frame {
-    width: calc(100vw - 2 * var(--gutter));
+    width: min(100cqw, 100cqh * 4 / 5);
     aspect-ratio: 4 / 5;
   }
   .tn__tag {
