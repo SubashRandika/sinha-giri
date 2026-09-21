@@ -31,7 +31,8 @@ export const PLATES: Record<PlateId, Plate> = {
   },
   lion: {
     id: "lion",
-    modern: { src: "/plates/lion-modern", aspect: 2400 / 1528, alt: "Photograph of the Lion Gate today: two giant lion paws in brick and plaster either side of a stairway, with a metal staircase above." },
+    // Top-anchored like the Lion Gate clips, whose first frame this is.
+    modern: { src: "/plates/lion-modern", aspect: 2400 / 1528, dy: 0.5 * (1 - 2400 / 1528 / (16 / 9)), alt: "Photograph of the Lion Gate today: two giant lion paws in brick and plaster either side of a stairway, with a metal staircase above." },
     ancient: { src: "/plates/lion-ancient", aspect: 1280 / 724, alt: "Cinematic reconstruction: a colossal plastered lion against the rock, the stairway climbing into its open mouth." },
   },
   summit: {

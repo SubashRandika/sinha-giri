@@ -9,7 +9,7 @@ const serif = Newsreader({ subsets: ["latin"], style: ["normal", "italic"], vari
 // Plain modern sans for interface and data.
 const sans = Hanken_Grotesk({ subsets: ["latin"], variable: "--font-sans", display: "swap" });
 // The site's own name, in its own script.
-const sinhala = Noto_Serif_Sinhala({ weight: ["400"], subsets: ["sinhala"], variable: "--font-sinhala", display: "swap" });
+const sinhala = Noto_Serif_Sinhala({ weight: ["400", "500"], subsets: ["sinhala"], variable: "--font-sinhala", display: "swap" });
 
 const description =
   "Experience Sigiriya, Sri Lanka's ancient Lion Rock, through an immersive cinematic journey from the royal city of King Kashyapa to the UNESCO World Heritage Site we see today.";

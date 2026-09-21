@@ -138,7 +138,20 @@ export default function WorldCanvas({ reduced, films: filmsOn, onReady }: Props)
           return f;
         }
         if (!v.paused) v.pause();
-        f.target = time * Math.max(0, v.duration - 0.06);
+        // A clip with a live segment scrubs up to it, then keeps it moving:
+        // the playhead rocks back and forth through it in real time.
+        const hold = FILMS[id].hold;
+        let share = time;
+        if (hold) {
+          const [a, b] = hold;
+          if (time < 0.999 || reduced) share = time * a;
+          else {
+            const k = ((performance.now() / 1000) * 0.75) / ((b - a) * v.duration);
+            const ping = k % 2 < 1 ? k % 1 : 1 - (k % 1);
+            share = a + (b - a) * ping;
+          }
+        }
+        f.target = share * Math.max(0, v.duration - 0.06);
         if (!v.seeking && Math.abs(v.currentTime - f.target) > 0.02) v.currentTime = f.target;
         return f;
       };

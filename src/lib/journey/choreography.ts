@@ -55,7 +55,7 @@ export const CHOREOGRAPHY: Record<ChapterId, Choreo> = {
     // Dawn drone footage plays by itself; scroll adds only a slight push.
     Object.assign(l.layer, film("dawn", -1));
     l.layer.camera = camLerp(cam(1.04, 0.6, 0.52), cam(1.12, 0.61, 0.54), t);
-    l.fog = lerp(0.75, 0.55, t);
+    l.fog = lerp(0.5, 0.35, t);
     l.warmth = 0.1;
     l.exposure = 0.92;
     return l;
@@ -94,17 +94,21 @@ export const CHOREOGRAPHY: Record<ChapterId, Choreo> = {
   gardens: (t) => {
     const l = base(482);
     // Today's dry outlines first, then water returns through the system.
-    const reveal = smoothstep(0.38, 0.86, t);
+    // Once the pools are full (t = 0.62) the fountains keep playing live
+    // for the rest of the chapter. A gentle push keeps both basins in frame.
+    const reveal = smoothstep(0.22, 0.62, t);
     l.layer = {
       mode: "photo",
       plate: "gardens",
       mask: "water",
       reveal,
-      camera: camLerp(cam(1.02, 0.5, 0.55), cam(1.32, 0.5, 0.52), t),
+      camera: camLerp(cam(1.0, 0.5, 0.56), cam(1.1, 0.5, 0.6), smoothstep(0, 1, t)),
       ...film("gardens-time", reveal),
     };
-    l.fog = 0.12;
-    l.warmth = lerp(0.25, 0.4, t);
+    l.fog = 0.04;
+    l.warmth = lerp(0.1, 0.18, t);
+    l.exposure = 1.04;
+    l.dust = 0.12;
     return l;
   },
 
@@ -129,7 +133,9 @@ export const CHOREOGRAPHY: Record<ChapterId, Choreo> = {
       plate: "lion",
       mask: "rise",
       reveal: build,
-      camera: camLerp(cam(1.04, 0.5, 0.52), cam(3.4, 0.5, 0.24), enter * enter),
+      // Held at the top of the frame so the head stays whole as it rises,
+      // then into the open mouth.
+      camera: camLerp(cam(1.0, 0.5, 0.4), cam(3.4, 0.5, 0.32), enter * enter),
       ...film("lion-time", build),
     };
     l.exposure = 1 - enter;
