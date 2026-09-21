@@ -18,6 +18,11 @@ export type FilmId =
  */
 export type FilmKind = "animated" | "timelapse";
 
+/**
+ * `aspect` is the clip's true picture shape. The 1080p masters were upscaled
+ * into a 16:9 frame, so their pixels can be stretched; sampling with this
+ * aspect puts the picture back in proportion.
+ */
 export interface Film extends Pick<PlateImage, "aspect" | "zoom" | "dx" | "dy"> {
   id: FilmId;
   kind: FilmKind;
@@ -38,8 +43,16 @@ export const FILMS: Record<FilmId, Film> = {
   "summit-orbit": film("summit-orbit", "animated", 1476, 620),
 };
 
-export function filmUrl(id: FilmId, small: boolean) {
-  return `/films/${id}-${small ? 480 : 720}.mp4`;
+export type FilmSize = 480 | 720 | 1080;
+
+/** Picks the lightest encoding that still looks sharp on this screen. */
+export function filmSize(): FilmSize {
+  const px = window.innerWidth * Math.min(window.devicePixelRatio || 1, 2);
+  return px <= 900 ? 480 : px < 1700 ? 720 : 1080;
+}
+
+export function filmUrl(id: FilmId, size: FilmSize) {
+  return `/films/${id}-${size}.mp4`;
 }
 
 /** Clips that have decoded a frame and can replace their plate. Written by the world canvas. */

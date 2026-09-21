@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import type * as THREE from "three";
 import { subscribeFrame, type LayerState, type PlateId } from "@/lib/journey/store";
 import { PLATES, fitOf, plateUrl } from "@/lib/journey/plates";
-import { FILMS, filmUrl, readyFilms, type FilmId } from "@/lib/journey/films";
+import { FILMS, filmSize, filmUrl, readyFilms, type FilmId } from "@/lib/journey/films";
 import { clampCamera, coverExtent } from "@/lib/journey/projection";
 import { fragmentShader, vertexShader } from "./shader";
 
@@ -89,10 +89,11 @@ export default function WorldCanvas({ reduced, films: filmsOn, onReady }: Props)
       // once), then either driven by the scroll or left to play by itself.
       const films = new Map<FilmId, FilmSlot>();
       const inUse = new Set<FilmId>();
+      const size = filmSize();
 
       const loadFilm = async (id: FilmId) => {
         try {
-          const res = await fetch(filmUrl(id, small));
+          const res = await fetch(filmUrl(id, size));
           if (!res.ok || disposed) return;
           const url = URL.createObjectURL(await res.blob());
           if (disposed) return URL.revokeObjectURL(url);

@@ -14,7 +14,8 @@ await mkdir(outDir, { recursive: true });
 
 const variants = [
   // [suffix, width, crf, keyframe interval]
-  ["720", 1280, 26, 4],
+  ["1080", 1920, 28, 4],
+  ["720", 1280, 27, 4],
   ["480", 854, 29, 4],
 ];
 
@@ -26,6 +27,8 @@ for (const file of (await readdir(srcDir)).filter((f) => f.endsWith(".mp4"))) {
       "-v", "error", "-y",
       "-i", path.join(srcDir, file),
       "-an",
+      // Fixed width and the source's height ratio: the upscaled masters are
+      // stored 16:9, and the page restores each clip's true shape.
       "-vf", `scale='min(${width},iw)':-2:flags=lanczos`,
       "-c:v", "libx264", "-preset", "slow", "-profile:v", "high", "-pix_fmt", "yuv420p",
       "-crf", String(crf), "-g", String(gop), "-keyint_min", String(gop), "-sc_threshold", "0", "-bf", "0",
