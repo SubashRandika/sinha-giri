@@ -1177,12 +1177,21 @@ body {
   gap: 14px;
   z-index: 2;
 }
+/* The list sits on sunlit sandstone, so it carries its own shade. */
+.stages::before {
+  content: "";
+  position: absolute;
+  inset: -40% -22% -34%;
+  z-index: -1;
+  background: radial-gradient(closest-side, rgb(12 9 7 / 0.62), rgb(12 9 7 / 0.3) 62%, transparent);
+  pointer-events: none;
+}
 .stages__item {
   display: grid;
   grid-template-columns: 9rem auto;
   align-items: baseline;
-  opacity: calc(0.25 + 0.75 * var(--on));
-  text-shadow: 0 1px 12px rgb(0 0 0 / 0.7);
+  opacity: calc(0.5 + 0.5 * var(--on));
+  text-shadow: 0 1px 2px rgb(0 0 0 / 0.8), 0 1px 14px rgb(0 0 0 / 0.75);
 }
 .stages__label {
   font-size: 0.72rem;
@@ -1193,11 +1202,11 @@ body {
 .stages__status {
   font-family: var(--font-serif), serif;
   font-style: italic;
-  font-size: 0.9rem;
-  color: var(--plaster-dim);
+  font-size: 0.95rem;
+  color: var(--plaster);
 }
 .stages__item--interp .stages__status {
-  color: var(--ochre);
+  color: #f3cd8c;
 }
 .lion__into {
   position: absolute;
@@ -1898,7 +1907,7 @@ body {
     bottom: calc(13svh + 10.5rem);
   }
   .stages__item {
-    grid-template-columns: 6.5rem auto;
+    grid-template-columns: 7.75rem auto;
   }
   .gardens .discover,
   .lion .discover,
