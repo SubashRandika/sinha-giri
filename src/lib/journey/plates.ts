@@ -37,9 +37,9 @@ export const PLATES: Record<PlateId, Plate> = {
   },
   summit: {
     id: "summit",
-    modern: { src: "/plates/summit-modern", aspect: 2400 / 1011, alt: "Aerial photograph of the summit: brick foundations and terraces on the flat top of the rock." },
-    // Calibrated so the rock rim lines up with the tighter present-day photograph.
-    ancient: { src: "/plates/summit-ancient", aspect: 1280 / 724, zoom: 1.1, dx: 0.025, dy: 0, alt: "Cinematic interpretation: plastered terraces, pillared halls with tiled roofs and a rock-cut pool on the summit at sunset." },
+    modern: { src: "/plates/summit-modern", aspect: 1256 / 792, alt: "Aerial photograph of the summit from high above: brick foundations, terraces and the rock-cut pool on the flat top of the rock, forest and fields below." },
+    // Calibrated so the cliff and the forest paths line up with the present-day photograph.
+    ancient: { src: "/plates/summit-ancient", aspect: 2048 / 1360, dy: 0.025, alt: "Cinematic interpretation: plastered terraces, pillared halls with tiled roofs and a rock-cut pool on the summit at sunset." },
   },
 };
 

@@ -47,8 +47,8 @@ export const FILMS: Record<FilmId, Film> = {
   "lion-walk": film("lion-walk", "animated", 1200, 764, { dy: LION_TOP }),
   "lion-time": film("lion-time", "timelapse", 1200, 764, { dy: LION_TOP }),
   // Starts on the summit reconstruction, so it shares that plate's alignment.
-  "summit-fall": film("summit-fall", "timelapse", 1276, 720, { zoom: 1.1, dx: 0.025, dy: 0 }),
-  "summit-orbit": film("summit-orbit", "animated", 1476, 620),
+  "summit-fall": film("summit-fall", "timelapse", 1176, 780, { dy: 0.025 }),
+  "summit-orbit": film("summit-orbit", "animated", 1208, 760),
 };
 
 export type FilmSize = 480 | 720 | 1080;
