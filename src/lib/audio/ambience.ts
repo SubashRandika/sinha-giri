@@ -11,6 +11,13 @@ import { subscribeFrame, type TimeState } from "@/lib/journey/store";
  *   epilogue   → a slow two-note drone
  */
 export class Ambience {
+  /**
+   * Told whether the browser is actually letting the context run. It stays
+   * suspended until the visitor has clicked, tapped or typed, however early
+   * the mix was switched on.
+   */
+  onRunningChange?: (running: boolean) => void;
+
   private ctx: AudioContext;
   private master: GainNode;
   private wind: GainNode;
@@ -27,6 +34,7 @@ export class Ambience {
     const Ctx = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
     this.ctx = new Ctx();
     const ctx = this.ctx;
+    ctx.addEventListener("statechange", () => this.onRunningChange?.(ctx.state === "running"));
     this.master = ctx.createGain();
     this.master.gain.value = 0;
     this.master.connect(ctx.destination);
@@ -166,9 +174,18 @@ export class Ambience {
     }
   }
 
-  async setEnabled(on: boolean) {
-    if (on && this.ctx.state === "suspended") await this.ctx.resume();
+  get running() {
+    return this.ctx.state === "running";
+  }
+
+  /**
+   * Switching on is only a request: a browser that has seen no interaction yet
+   * leaves `resume()` pending indefinitely, so it is never awaited — the fade
+   * is scheduled anyway and plays from the moment the context is released.
+   */
+  setEnabled(on: boolean) {
     this.master.gain.setTargetAtTime(on ? 0.9 : 0, this.ctx.currentTime, 0.4);
+    if (on && this.ctx.state !== "running") void this.ctx.resume().catch(() => {});
   }
 
   destroy() {
